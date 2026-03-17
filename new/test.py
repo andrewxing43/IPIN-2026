@@ -2,10 +2,10 @@ import os
 import numpy as np
 import torch
 from model import RSSITransformerModel
-from dataloader1 import load_data_and_build_dataloaders
+from dataloader import load_data_and_build_dataloaders
 from utils import ale, load_checkpoint, set_seed
 
-# --- 仿照 DANN 代码设置常量 ---
+# Target Directories
 METHOD_NAME = "HGTLoc"
 RESULTS_DIR = "results"
 
@@ -20,8 +20,6 @@ def evaluate_test(model, loader, device):
             out = model(data)
             all_preds.append(out.cpu())
             all_targets.append(data['label'].cpu())
-            
-    # 反归一化，恢复到实际的物理米数
     pred = torch.cat(all_preds, dim=0) * 30
     target = torch.cat(all_targets, dim=0) * 30
     
